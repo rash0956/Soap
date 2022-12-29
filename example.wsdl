@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://localhost/Soap/server.php" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap-enc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="Bookcatalog.BookService" targetNamespace="http://localhost/Soap/server.php">
+  <types>
+    <xsd:schema targetNamespace="http://localhost/Soap/server.php">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+      <xsd:complexType name="Bookcatalog.Transfer">
+        <xsd:all>
+          <xsd:element name="sourceCurrency" type="xsd:string"/>
+          <xsd:element name="targetCurrency" type="xsd:string"/>
+          <xsd:element name="amountInSourceCurrency" type="xsd:int"/>
+        </xsd:all>
+      </xsd:complexType>
+    </xsd:schema>
+  </types>
+  <portType name="Bookcatalog.BookServicePort">
+    <operation name="money_convert">
+      <input message="tns:money_convertIn"/>
+      <output message="tns:money_convertOut"/>
+    </operation>
+  </portType>
+  <binding name="Bookcatalog.BookServiceBinding" type="tns:Bookcatalog.BookServicePort">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="money_convert">
+      <soap:operation soapAction="http://localhost/Soap/server.php#money_convert"/>
+      <input>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://localhost/Soap/server.php"/>
+      </input>
+      <output>
+        <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://localhost/Soap/server.php"/>
+      </output>
+    </operation>
+  </binding>
+  <message name="money_convertIn">
+    <part name="info_data" type="tns:Bookcatalog.Transfer"/>
+  </message>
+  <message name="money_convertOut">
+    <part name="return" type="xsd:string"/>
+  </message>
+  <service name="Bookcatalog.BookServiceService">
+    <port name="Bookcatalog.BookServicePort" binding="tns:Bookcatalog.BookServiceBinding">
+      <soap:address location="http://localhost/Soap/server.php"/>
+    </port>
+  </service>
+</definitions>
